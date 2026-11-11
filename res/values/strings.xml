@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">状态栏时钟</string>
+    <string name="xposed_description">状态栏时间格式调整</string>
+
+    <array name="xposed_scope">
+        <item>com.android.systemui</item>
+    </array>
+</resources>
