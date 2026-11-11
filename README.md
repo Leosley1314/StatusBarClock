@@ -504,11 +504,26 @@ settings delete global sbclock_hook_state
 
 ## 从源码构建
 
-工程目录 `StatusBarClockX/` 是完整的可编译源码，不依赖 Gradle：
+仓库根目录就是工程根目录，只依赖命令行工具，不依赖 Gradle：
+
+```
+AndroidManifest.xml  模块清单（versionCode / xposedscope / xposeddescription）
+assets/xposed_init   入口类名，必须指向 com.sbclock.xposed.XposedEntry
+src/                 模块与设置界面的 Java 源码
+stub/                Xposed API 编译期桩类，不进 APK
+res/                 模块界面资源（HyperOS 风格的配色与样式）
+build.ps1            手工构建脚本
+dist/                已签名的成品 APK
+```
 
 ```
 pwsh -File build.ps1
 ```
+
+脚本以自身所在目录为工程根（`$PSScriptRoot`），产物 `StatusBarClock-1.0.apk` 落在工程根的**上一层**；
+仓库里 `dist/StatusBarClock-1.0.apk` 就是最后一次构建的产物，可直接下载安装。
+首次构建若工程根没有 `sbclock.keystore`，脚本会用 `keytool` 自动生成一个
+（口令与 DN 见脚本内 `keytool` 那段），所以别人 clone 下来也能直接构建，只是签名与你本地不同。
 
 脚本使用 `aapt2 → javac → d8 → zipalign → apksigner` 手工打包，需要：
 
